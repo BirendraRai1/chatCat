@@ -13,6 +13,13 @@ module.exports=()=>{
 			'/chat':(req,res,next)=>{
 				res.render('chatroom');
 
+			},
+			'/getsession':(req,res,next)=>{
+				res.send("My favorite color :"+req.session.favcolor);
+			},
+			'/setsession':(req,res,next)=>{
+				req.session.favcolor="Red";
+				res.send("Session Set");
 			}
 		},
 		'post':{
