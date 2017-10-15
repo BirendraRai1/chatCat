@@ -1,5 +1,6 @@
 'use strict';
 const h = require('../helpers');
+const passport = require('passport');
 
 module.exports=()=>{
 	let routes={
@@ -7,21 +8,33 @@ module.exports=()=>{
 			'/':(req,res,next)=>{
 				res.render('login');
 			},
-			'/rooms':(req,res,next)=>{
-				res.render('rooms');
-			},
-			'/chat':(req,res,next)=>{
-				res.render('chatroom');
+			'/rooms':[h.isAuthenticated,(req,res,next)=>{
+				res.render('rooms',{
+					user:req.user
+				});
+			}],
+			'/chat':[h.isAuthenticated,(req,res,next)=>{
+				res.render('chatroom',{
+					user:req.user
+				});
+			}],	
 
-			},
-			'/getsession':(req,res,next)=>{
-				res.send("My favorite color :"+req.session.favcolor);
-			},
-			'/setsession':(req,res,next)=>{
-				req.session.favcolor="Red";
-				res.send("Session Set");
+			'/auth/facebook':passport.authenticate('facebook'),
+			'/auth/facebook/callback':passport.authenticate('facebook',{
+				successRedirect :'/rooms',
+				failureRedirect :'/'
+			}),
+			'/auth/twitter':passport.authenticate('twitter'),
+			'/auth/twitter/callback':passport.authenticate('twitter',{
+				successRedirect :'/rooms',
+				failureRedirect :'/'
+			}),
+			'/logout':(req,res,next) =>{
+				req.logout();
+				res.redirect('/');
 			}
 		},
+
 		'post':{
 
 		},
