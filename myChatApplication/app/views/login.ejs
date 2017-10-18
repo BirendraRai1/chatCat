@@ -3,43 +3,46 @@
    <head>
       <title><%= title %></title>
    </head>
-   <body class="login-screen">
+   <body>
       <header>
-        <nav class="navbar navbar-inverse">
-          <div class="container-fluid">
-               <div class="navbar-header">
-                 <a href="/" class="boxN">chatApplication</a>
+        <nav>
+          <div>
+               <div>
+                 <a href="/">chatApplication</a>
                </div>
-               <ul class="nav navbar-nav navbar-right">
-                 <li class="boxF"><a href="/">Home</a></li>
-                 <li class="boxF"><a href="/chat">Chat</a></li>
+               <ol>
+                 <li><a href="/">Home</a></li>
+                 <li><a href="/chat">Chat</a></li>
                  <% if(user){ %>
-                   <li  class="boxF"><a href=""><span id="totalOnline" class="badge">0</span>  User's Online</a></li>
-                   <li  class="boxF"><a href="#">Hello, <%= user.username %></a></li>
-                   <li  class="boxF"><a href="/user/logout">Logout</a></li>
+                   <li><a href=""><span id="totalOnline" class="badge">0</span>  User's Online</a></li>
+                   <li><a href="#">Hello, <%= user.username %></a></li>
+                   <li><a href="/user/logout">Logout</a></li>
                  <% } else{ %>
-                   <li class="boxF"><a href="/user/login">Login</a></li>
-                   <li class="boxF"><a href="/user/signup">Signup</a></li>
+                   <li><a href="/user/login">Login</a></li>
+                   <li><a href="/user/signup">Signup</a></li>
                  <% } %>
-               </ul>
+               </ol>
           </div>
         </nav>
       </header>
       <main>
          <main>
-            <div class="login-box">
+            <div>
                <br>
                <p><b>Sign In to Your Account</b></p>
                <form class="login-form" action="/user/api/v1/login" method="post">
-                  <div class="input-block">
-                     <input class="input-box" type="email" name="email" placeholder="Email" autofocus="" required="">
+                  <div>
+                     <p>Email:</p>
+                     <input type="email" name="email" placeholder="Email" autofocus="" required="">
                   </div>
-                  <div class="input-block">
-                     <input class="input-box" type="password" name="password" placeholder="Password" required="">
+                  <div>
+                     <p>PassWord:</p> 
+                     <input type="password" name="password" placeholder="Password" required="">
                   </div>
-                  <button class="btn btn-success btn-lg btn-block" type="submit" name="submit">Login</button><br>
+                  <br>
+                  <button type="submit" name="submit">Login</button><br>
                   <p><b>Don't have an account?</b> </p>
-                  <a href="/user/signup" class="btn btn-danger btn-lg btn-block"><b>Sign Up Here</b></a><br>
+                  <a href="/user/signup"><b>Sign Up Here</b></a><br>
                </form>
             </div>
          </main>
@@ -47,7 +50,6 @@
          <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
          <script src="http://cdn.socket.io/socket.io-1.4.5.js"></script>
          <script src="/moment.min.js"></script>
-         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-      </main>
+         </main>
    </body>
 </html>

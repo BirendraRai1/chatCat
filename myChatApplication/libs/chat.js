@@ -5,9 +5,9 @@ var _ = require('lodash');
 var eventEmitter = new events.EventEmitter();
 
 //adding db models
-require('../app/models/user.js');
-require('../app/models/chat.js');
-require('../app/models/room.js');
+require('../app/models/userSchema.js');
+require('../app/models/chatSchema.js');
+require('../app/models/roomSchema.js');
 
 //using mongoose Schema models
 var userModel = mongoose.model('User');
@@ -259,19 +259,19 @@ module.exports.sockets = function(http) {
   //socket namespace for signup.
   var ioSignup = io.of('/signup');
 
-  var checkUname, checkEmail; //declaring variables for function.
+  var checkUserName, checkEmail; //declaring variables for function.
 
   ioSignup.on('connection', function(socket) {
     console.log("signup connected.");
 
     //verifying unique username.
-    socket.on('checkUname', function(uname) {
+    socket.on('checkUserName', function(uname) {
       eventEmitter.emit('findUsername', uname); //event to perform database operation.
-    }); //end of checkUname event.
+    }); //end of checkUserName event.
 
-    //function to emit event for checkUname.
-    checkUname = function(data) {
-      ioSignup.to(socket.id).emit('checkUname', data); //data can have only 1 or 0 value.
+    //function to emit event for checkUserName.
+    checkUserName = function(data) {
+      ioSignup.to(socket.id).emit('checkUserName1', data); //data can have only 1 or 0 value.
     }; //end of checkUsername function.
 
     //verifying unique email.
@@ -288,53 +288,48 @@ module.exports.sockets = function(http) {
     socket.on('disconnect', function() {
       console.log("signup disconnected.");
     });
-
   }); //end of ioSignup connection event.
 
   //database operations are kept outside of socket.io code.
   //event to find and check username.
-  eventEmitter.on('findUsername', function(uname) {
+  eventEmitter.on('findUsername', function(username) {
 
     userModel.find({
-      'username': uname
-    }, function(err, result) {
-      if (err) {
-        console.log("Error : " + err);
-      } else {
-        //console.log(result);
-        if (result == "") {
-          checkUname(1); //send 1 if username not found.
+      'username': username
+    },function(err, result) {
+        if (err) {
+          console.log("Error : " + err);
         } else {
-          checkUname(0); //send 0 if username found.
+          //console.log(result);
+          if (result == "") {
+            checkUserName(1); //send 1 if username not found.
+          } else {
+            checkUserName(0); //send 0 if username found.
+          }
         }
-      }
-    });
-
+      });
   }); //end of findUsername event.
 
-  //event to find and check username.
+  //event to find and check email.
   eventEmitter.on('findEmail', function(email) {
 
     userModel.find({
-      'email': email
-    }, function(err, result) {
-      if (err) {
-        console.log("Error : " + err);
-      } else {
-        //console.log(result);
-        if (result == "") {
-          checkEmail(1); //send 1 if email not found.
-        } else {
-          checkEmail(0); //send 0 if email found.
-        }
-      }
-    });
-
+        'email': email
+      },function(err, result) {
+          if (err) {
+            console.log("Error : " + err);
+          } else {
+            //console.log(result);
+            if (result == "") {
+              checkEmail(1); //send 1 if email not found.
+            } else {
+              checkEmail(0); //send 0 if email found.
+            }
+          }
+        });
   }); //end of findUsername event.
 
   //
   //
-
   return io;
-
 };

@@ -1,13 +1,13 @@
 var express = require('express');
-var router = express.Router();
+var chatRouter = express.Router();
 
 var auth = require('../../middlewares/auth.js');
 
 
-module.exports.controller = function(app){
+module.exports.controllerFunction = function(app){
 
   //route for chat
-  app.get('/chat',auth.checkLogin,function(req,res){
+  chatRouter.get('/chat',auth.checkLogin,function(req,res){
 
     res.render('chat',
                 {
@@ -17,6 +17,6 @@ module.exports.controller = function(app){
                 });
   });
 
-  app.use(router);
+  app.use(chatRouter);
 
 }//Chat controller end.

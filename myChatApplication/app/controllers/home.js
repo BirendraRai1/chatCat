@@ -2,17 +2,17 @@ var express = require('express');
 var mongoose = require('mongoose');
 
 
-var router = express.Router();
+var homeRouter = express.Router();
 
 var userModel = mongoose.model('User');
 
-module.exports.controller = function(app){
+module.exports.controllerFunction = function(app){
 
   //router for home.
-  router.get('/',function(req,res){
+  homeRouter.get('/',function(req,res){
     res.redirect('/user/login');
   });
 
-  app.use(router);
+  app.use(homeRouter);
 
 }//home controller end.

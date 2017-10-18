@@ -5,54 +5,54 @@
    </head>
    <body>
       <header>
-        <nav class="navbar navbar-inverse">
-          <div class="container-fluid">
-            <div class="navbar-header">
-              <a href="/" class="boxN">chatApplication</a>
+        <nav>
+          <div>
+            <div>
+              <a href="/">chatApplication</a>
             </div>
-            <ul class="nav navbar-nav navbar-right">
-              <li class="boxF"><a href="/">Home</a></li>
-              <li class="boxF"><a href="/chat">Chat</a></li>
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/chat">Chat</a></li>
               <% if(user){ %>
-                <li  class="boxF"><a href=""><span id="totalOnline" class="badge">0</span>  User's Online</a></li>
-                <li  class="boxF"><a href="#">Hello, <%= user.username %></a></li>
-                <li  class="boxF"><a href="/user/logout">Logout</a></li>
+                <li><a href=""><span id="totalOnline" class="badge">0</span>  User's Online</a></li>
+                <li><a href="#">Hello, <%= user.username %></a></li>
+                <li><a href="/user/logout">Logout</a></li>
               <% } else{ %>
-                <li class="boxF"><a href="/user/login">Login</a></li>
-                <li class="boxF"><a href="/user/signup">Signup</a></li>
+                <li><a href="/user/login">Login</a></li>
+                <li><a href="/user/signup">Signup</a></li>
               <% } %>
-            </ul>
+            </ol>
           </div>
         </nav>
       </header>
       <main>
-         <div class="login-box">
+         <div>
             <br>
             <p><b>Sign Up</b></p>
-            <form class="signup-form" action="/user/api/v1/signup" method="post">
+            <form action="/user/api/v1/signup" method="post">
                <p id="error1"></p>
-               <div class="input-block">
+               <div>
                   <p>Username:</p>
-                  <input id="uname" class="input-box" type="text" name="username" placeholder="Username" autofocus="" autocomplete="off" required="">
-                  <span id="ik" class="glyphicon glyphicon-ok"></span>
-                  <span id="ir" class="glyphicon glyphicon-remove"></span>
+                  <input id="username"  type="text" name="username" placeholder="Username" autofocus="" autocomplete="off" required="">
+                  <span id="ik"></span>
+                  <span id="ir"></span>
                </div>
-               <div class="input-block">
+               <div>
                   <p>Email:</p>
-                  <input id="email" class="input-box" type="email" name="email" placeholder="Email" autocomplete="off" required="">
-                  <span id="ik1" class="glyphicon glyphicon-ok"></span>
-                  <span id="ir1" class="glyphicon glyphicon-remove"></span>
+                  <input id="email" type="email" name="email" placeholder="Email" autocomplete="off" required="">
+                  <span id="ik1"></span>
+                  <span id="ir1"</span>
                </div>
-               <div class="input-block">
+               <div>
                   <p>Password:</p>
-                  <input id="pass" class="input-box" type="password" name="password" placeholder="Password" required="">
-                  <span id="ik2" class="glyphicon glyphicon-ok"></span>
-                  <span id="ir2" class="glyphicon glyphicon-remove"></span>
+                  <input id="password"  type="password" name="password" placeholder="Password" required="">
+                  <span id="ik2"></span>
+                  <span id="ir2"></span>
                </div>
                <br>
-               <button class="btn btn-primary btn-block btn-lg" type="submit" name="submit">Signup</button><br>
+               <button type="submit" name="submit">Signup</button><br>
                <p><b>Have an account?</b> </p>
-               <a href="/user/login" class="btn btn-danger btn-lg btn-block"><b>Log In Here</b></a><br>
+               <a href="/user/login" ><b>Log In Here</b></a><br>
             </form>
          </div>
       </main>

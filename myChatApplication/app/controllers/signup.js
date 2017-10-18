@@ -8,16 +8,16 @@ var auth = require('../../middlewares/auth.js');
 var validator = require('../../middlewares/validator.js');
 var encrypt = require('../../libs/encrypt.js');
 
-var router = express.Router();
+var signUpRouter = express.Router();
 
 
 var userModel = mongoose.model('User');
 
 
-module.exports.controller = function(app){
+module.exports.controllerFunction = function(app){
 
   //route for signup
-  router.get("/signup",auth.loggedIn,function(req,res){
+  signUpRouter.get("/signup",auth.loggedIn,function(req,res){
     res.render('signup',
                 {
                   title:"User Signup",
@@ -27,7 +27,7 @@ module.exports.controller = function(app){
   });
 
   //api to create new user
-  router.post("/api/v1/signup",auth.loggedIn,validator.emailExist,function(req,res){
+  signUpRouter.post("/api/v1/signup",auth.loggedIn,validator.emailExist,function(req,res){
 
     var today = Date.now();
     var id = shortid.generate();
@@ -80,6 +80,6 @@ module.exports.controller = function(app){
 
   });
 
-  app.use('/user',router);
+  app.use('/user',signUpRouter);
 
 }//signup controller end

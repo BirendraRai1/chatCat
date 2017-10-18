@@ -5,14 +5,14 @@ var mongoose = require('mongoose');
 var auth = require('../../middlewares/auth.js');
 var encrypt = require('../../libs/encrypt.js');
 
-var router = express.Router();
+var loginRouter = express.Router();
 
 var userModel = mongoose.model('User');
 
-module.exports.controller = function(app){
+module.exports.controllerFunction = function(app){
 
   //route for login
-  router.get('/login',auth.loggedIn,function(req,res){
+  loginRouter.get('/login',auth.loggedIn,function(req,res){
     res.render('login',
                 {
                   title:"User Login",
@@ -22,7 +22,7 @@ module.exports.controller = function(app){
   });
 
   //route for logout
-  router.get('/logout',function(req,res){
+  loginRouter.get('/logout',function(req,res){
 
     delete req.session.user;
     res.redirect('/user/login');
@@ -30,7 +30,7 @@ module.exports.controller = function(app){
   });
 
   //route for login
-  router.post('/api/v1/login',auth.loggedIn,function(req,res){
+  loginRouter.post('/api/v1/login',auth.loggedIn,function(req,res){
 
     var epass = encrypt.encryptPassword(req.body.password);
 
@@ -67,6 +67,6 @@ module.exports.controller = function(app){
     });
   });
 
-  app.use('/user',router);
+  app.use('/user',loginRouter);
 
 } // login controller end

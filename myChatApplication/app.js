@@ -5,8 +5,6 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-var mongoStore = require('connect-mongo')(session);
-var methodOverride = require('method-override');
 var path = require('path');
 var fs = require('fs');
 var logger = require('morgan');
@@ -16,8 +14,15 @@ var port = process.env.PORT || 3000;
 
 //socket.io
 require('./libs/chat.js').sockets(http);
+//require('./sockets/signup.js').sockets(http);
 
 app.use(logger('dev'));
+
+//parsing middlewares
+app.use(bodyParser.json({limit:'10mb',extended:true}));
+app.use(bodyParser.urlencoded({limit:'10mb',extended:true}));
+app.use(cookieParser());
+
 
 //db connection
 var dbPath = "mongodb://localhost/chatApplication";
@@ -26,37 +31,28 @@ mongoose.connection.once('open',function(){
   console.log("Database Connection opened.");
 });
 
-//http method override middleware
-app.use(methodOverride(function(req,res){
-  if(req.body && typeof req.body === 'object' && '_method' in req.body){
-    var method = req.body._method;
-    delete req.body._method;
-    return method;
-  }
+//session setup
+app.use(session({
+        name : 'myCustomCookie',
+        secret : 'myAppSecret',
+        resave : true,
+        httpOnly : true,
+        saveUninitialized: true,
+        cookie:{secure:false}
 }));
 
-//session setup
-var sessionInit = session({
-                    name : 'userCookie',
-                    secret : 'ourChat',
-                    resave : true,
-                    httpOnly : true,
-                    saveUninitialized: true,
-                    });
 
-app.use(sessionInit);
 
 //public folder as static
-app.use(express.static(path.resolve(__dirname,'./public')));
+app.use(express.static('public'));
+
+
 
 //views folder and setting ejs engine
-app.set('views', path.resolve(__dirname,'./app/views'));
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname,'/app/views'));
 
-//parsing middlewares
-app.use(bodyParser.json({limit:'10mb',extended:true}));
-app.use(bodyParser.urlencoded({limit:'10mb',extended:true}));
-app.use(cookieParser());
+
 
 //including models files.
 fs.readdirSync("./app/models").forEach(function(file){
@@ -70,9 +66,10 @@ fs.readdirSync("./app/controllers").forEach(function(file){
   if(file.indexOf(".js")){
     var route = require("./app/controllers/"+file);
     //calling controllers function and passing app instance.
-    route.controller(app);
+    route.controllerFunction(app);
   }
 });
+
 
 //handling 404 error.
 app.use(function(req,res){

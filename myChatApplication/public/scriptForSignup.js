@@ -4,34 +4,26 @@ $(function(){
 
   var socket = io('/signup');
 
-  var uflag = eflag = pflag = 0;
+  var userflag = emailflag = passwordflag = 0;
 
   //to check for unique username.
-  $('#uname').keyup(function(){
-    var uname = $('#uname').val();
-    if(uname.length < 5){
-      uflag = 0;
-      $('#ik').hide();
-      $('#ir').show();
-      $('#error1').show().text("Username Should Contain 5 or More Characters.");
-    }
-    else{
-      socket.emit('checkUname',uname);
-      socket.on('checkUname',function(data){
+  $('#username').keyup(function(){
+    var username = $('#username').val();
+      socket.emit('checkUserName',username);
+      socket.on('checkUserName1',function(data){
         if(data == 1){
-          uflag = 1;
+          userflag = 1;
           $('#ik').show();
           $('#ir').hide();
           $('#error1').hide();
         }
         else{
-          uflag = 0;
+          userflag = 0;
           $('#ik').hide();
           $('#ir').show();
           $('#error1').show().text("Username Already Exists. Please, Change.");
         }
       });
-    }
   });//end of check for unique username.
 
   //checking for email.
@@ -42,7 +34,7 @@ $(function(){
     var dotpos = email.lastIndexOf(".");
 
     if (atpos < 1 || dotpos < atpos+2 || dotpos+2 >= email.length){
-      eflag = 0;
+      emailflag = 0;
       $('#ik1').hide();
       $('#ir1').show();
       $('#error1').show().text("Please Enter Valid Email.");
@@ -51,13 +43,13 @@ $(function(){
       socket.emit('checkEmail',email);
       socket.on('checkEmail',function(data){
         if(data == 1){
-          eflag = 1;
+          emailflag = 1;
           $('#ik1').show();
           $('#ir1').hide();
           $('#error1').hide();
         }
         else{
-          eflag = 0;
+          emailflag = 0;
           $('#ik1').hide();
           $('#ir1').show();
           $('#error1').show().text("Email Already Exists. Please, Change.");
@@ -67,16 +59,16 @@ $(function(){
   }); //end of checking for email.
 
   //checking password.
-  $('#pass').keyup(function(){
-    var pass = $('#pass').val();
+  $('#password').keyup(function(){
+    var pass = $('#password').val();
     if(pass.length < 5){
-      pflag = 0;
+      passwordflag = 0;
       $('#ik2').hide();
       $('#ir2').show();
       $('#error1').show().text("Password Should Have Atleast 5 Characters.");
     }
     else{
-      pflag = 1;
+      passwordflag = 1;
       $('#ik2').show();
       $('#ir2').hide();
       $('#error1').hide();
@@ -86,7 +78,7 @@ $(function(){
   //on form submit code.
   $('form').submit(function(){
     //validate action.
-    if(uflag == 1 && eflag == 1 && pflag == 1){
+    if(userflag == 1 && emailflag == 1 && passwordflag == 1){
       return true;
     }
     else{
